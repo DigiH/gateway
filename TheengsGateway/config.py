@@ -49,6 +49,8 @@ DEFAULT_CONFIG = {
     "identities": {},
     "tracker_timeout": 120,
     "ble": 1,
+    "whitelist": [],
+    "blacklist": [],
 }
 
 
@@ -75,6 +77,12 @@ def parse_args() -> argparse.Namespace:
         nargs="+",
         metavar=("ADDRESS", "BINDKEY"),
         help="Device addresses and their bindkeys: ADDR1 KEY1 ADDR2 KEY2",
+    )
+    parser.add_argument(
+        "-bl",
+        "--blacklist",
+        nargs="+",
+        help="Addresses of Bluetooth devices to ignore, all other devices are allowed",
     )
     parser.add_argument(
         "-c",
@@ -247,6 +255,12 @@ def parse_args() -> argparse.Namespace:
         "--user",
         type=str,
         help="MQTT username",
+    )
+    parser.add_argument(
+        "-wl",
+        "--whitelist",
+        nargs="+",
+        help="Addresses of Bluetooth devices to allow, all other devices are ignored",
     )
     parser.add_argument(
         "-ws",

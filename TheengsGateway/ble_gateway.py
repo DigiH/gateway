@@ -458,14 +458,17 @@ class Gateway:
         """Detect device in received advertisement data."""
         logger.debug("%s:%s", device.address, advertisement_data)
 
-        if (
-            device.address not in self.configuration["whitelist"]
-            or device.address in self.configuration["blacklist"]
-        ):
-            return
-
         # Try to resolve private addresses with known IRKs
         address = self.rpa2id(device.address)
+
+        if (
+            address not in self.configuration["whitelist"]
+            and self.configuration["whitelist"] != []
+        ) or (
+            address in self.configuration["blacklist"]
+            and address not in self.configuration["whitelist"]
+        ):
+            return
 
         # Try to add the device to dictionary of clocks to synchronize time.
         self.add_clock(address)
